@@ -1,13 +1,9 @@
 VERSION:=$(shell cat VERSION)
+RELEASE_TYPE=patch
 
 build:
 				docker build -t nhyne/jenkins:${VERSION} .
 
 release: build
 				docker push nhyne/jenkins:${VERSION}
-				echo $$(( $(VERSION) + 1 )) > VERSION
-				git add VERSION
-				git cm -m "Release ${VERSION}"
-				git tag v${VERSION}
-				git push origin v${VERSION}
-				git push
+				./release.sh ${RELEASE_TYPE}
